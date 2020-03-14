@@ -15,7 +15,7 @@ class WordCard extends React.Component {
       currentTeam: 1,
       teamOneScore: 0,
       teamTwoScore: 0,
-      seconds: 3,
+      seconds: 60,
     };
     this.timer = 0;
     this.audio = new Audio();
@@ -48,7 +48,7 @@ class WordCard extends React.Component {
   switchTeams() {
     clearInterval(this.timer);
     this.setState({
-      seconds: 3
+      seconds: 60
     })
     this.timer = 0;
     if (this.state.currentTeam === 1) {
