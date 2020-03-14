@@ -15,9 +15,10 @@ class WordCard extends React.Component {
       currentTeam: 1,
       teamOneScore: 0,
       teamTwoScore: 0,
-      seconds: 60,
+      seconds: 3,
     };
     this.timer = 0;
+    this.audio = new Audio();
 
     this.countDown = this.countDown.bind(this);
   }
@@ -47,7 +48,7 @@ class WordCard extends React.Component {
   switchTeams() {
     clearInterval(this.timer);
     this.setState({
-      seconds: 60
+      seconds: 3
     })
     this.timer = 0;
     if (this.state.currentTeam === 1) {
@@ -79,9 +80,7 @@ class WordCard extends React.Component {
     if (this.timer === 0 && this.state.seconds > 0) {
       this.timer = setInterval(this.countDown, 1000);
     }
-    this.setState({
-      timerIsRunning: true
-    })
+    this.audio.play()
   }
 
   countDown() {
@@ -91,13 +90,15 @@ class WordCard extends React.Component {
     // Check if we're at zero.
     if (seconds === 0) { 
       clearInterval(this.timer);
-      const buzzer = document.getElementsByClassName("buzzer")[0]
-      console.log(buzzer);
-      buzzer.play()
-      this.setState({
-        timerIsRunning: false
-      })
+      this.audio.src = buzzer;
+      this.audio.play();
     }
+  }
+
+  componentDidMount() {
+    this.setState({
+      audio: new Audio()
+    })
   }
 
   render() {
@@ -127,7 +128,7 @@ class WordCard extends React.Component {
     return (
       <div style={styles.card}>
         <audio className="buzzer">
-          <source src={buzzer}></source>
+          <source></source>
         </audio>
         <Confetti
           className={this.state.showConfetti ? 'confetti on' : 'confetti off'}
