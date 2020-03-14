@@ -3,6 +3,7 @@ import { WORDS } from './words';
 import windowSize from 'react-window-size';
 import Confetti from 'react-confetti';
 import clock from './clock.svg';
+import buzzer from './buzzer.mp3';
 
 class WordCard extends React.Component {
   constructor(props) {
@@ -90,6 +91,9 @@ class WordCard extends React.Component {
     // Check if we're at zero.
     if (seconds === 0) { 
       clearInterval(this.timer);
+      const buzzer = document.getElementsByClassName("buzzer")[0]
+      console.log(buzzer);
+      buzzer.play()
       this.setState({
         timerIsRunning: false
       })
@@ -122,6 +126,9 @@ class WordCard extends React.Component {
     }
     return (
       <div style={styles.card}>
+        <audio className="buzzer">
+          <source src={buzzer}></source>
+        </audio>
         <Confetti
           className={this.state.showConfetti ? 'confetti on' : 'confetti off'}
           width={this.props.windowWidth}
