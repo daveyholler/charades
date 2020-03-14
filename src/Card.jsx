@@ -80,6 +80,7 @@ class WordCard extends React.Component {
     if (this.timer === 0 && this.state.seconds > 0) {
       this.timer = setInterval(this.countDown, 1000);
     }
+    this.audio = new Audio();
     this.audio.play()
   }
 
