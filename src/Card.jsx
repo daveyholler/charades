@@ -16,6 +16,7 @@ class WordCard extends React.Component {
       teamOneScore: 0,
       teamTwoScore: 0,
       seconds: 60,
+      gameOver: false,
     };
     this.timer = 0;
     this.audio = new Audio();
@@ -73,6 +74,16 @@ class WordCard extends React.Component {
       words: words,
       currentWord: currentWord,
     })
+    if (this.state.words.length === 0) {
+      this.setState({
+        gameOver: true
+      })
+      clearInterval(this.timer);
+      this.setState({
+        seconds: 60
+      })
+      this.timer = 0;
+    }
   }
 
   startTimer() {
@@ -126,7 +137,23 @@ class WordCard extends React.Component {
         padding: '2rem 2rem 10rem 2rem'
       }
     }
-    return (
+    const outOfWords = (
+      <div style={styles.card}>
+        <h1>Out of words</h1>
+        <button style={styles.button}onClick={() => window.location.reload(false)}>Start over</button>
+        <div className="scoreCardRow">
+          <div className={this.state.currentTeam === 1 ? 'scoreCard active' : 'scoreCard'}>
+            <div className="title">Team One</div>
+            <div className="score">{this.state.teamOneScore}</div>
+          </div>
+          <div className={this.state.currentTeam === 2 ? 'scoreCard active' : 'scoreCard'}>
+            <div className="title">Team Two</div>
+            <div className="score">{this.state.teamTwoScore}</div>
+          </div>
+        </div>
+      </div>
+    );
+    const gamePlay = (
       <div style={styles.card}>
         <audio className="buzzer">
           <source></source>
@@ -169,8 +196,13 @@ class WordCard extends React.Component {
           )
         }
       </div>
-    )
-  }
+    );
+    if (this.state.gameOver) {
+      return outOfWords
+    } else {
+      return gamePlay
+    }
+  } 
 }
 
 export default windowSize(WordCard);
